@@ -7,9 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.itextpdf:itext-pdfa:5.5.8" level="project" />
-    <orderEntry type="library" name="org.eclipse.birt.runtime.3_7_1:com.lowagie.text:2.1.7" level="project" />
-    <orderEntry type="library" name="com.google.code.gson:gson:2.6.1" level="project" />
+    <orderEntry type="library" name="itext-pdfa-5.5.8" level="project" />
+    <orderEntry type="library" name="gson-2.8.0" level="project" />
+    <orderEntry type="library" name="itextpdf-5.5.8" level="project" />
+    <orderEntry type="library" name="iText-2.1.7" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">
