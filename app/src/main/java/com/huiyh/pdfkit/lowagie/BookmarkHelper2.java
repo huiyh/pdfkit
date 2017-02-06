@@ -10,11 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.huiyh.pdfkit.lowagie.BookmarkConst.*;
+import static com.huiyh.pdfkit.lowagie.BookmarkConst.KEY_PAGE;
+
 public class BookmarkHelper2 {
     private static int line = -1;
     private List<HashMap<String,Object>> data = null;
 
-    public void setOutlines(String oldFile, String newFile, List<HashMap<String ,Object>> data) {
+    public static void setOutlines(String oldFile, String newFile, List<HashMap<String ,Object>> data) {
         try {
             //create a reader for a certain document
             PdfReader reader = new PdfReader(oldFile);
@@ -24,7 +27,7 @@ public class BookmarkHelper2 {
             
             //read the outlines structure file
 //            readOutlinesFile(outlinesFile);
-            this.data = data;
+//            this.data = data;
 
             //set the outlines
             stamp.setOutlines(data);
@@ -147,4 +150,14 @@ public class BookmarkHelper2 {
 
         return false;
     }
+
+    public static HashMap<String, Object> createMarkItem(String title, int pageNum) {
+        HashMap<String, Object> item = new HashMap<>();
+        item.put(KEY_ACTION, VALUE_ACTION_GOTO);
+        item.put(KEY_TITLE, title);
+        String page = pageNum + VALUE_PAGE_FIT;
+        item.put(KEY_PAGE, page);
+        return item;
+    }
+
 }
