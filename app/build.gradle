@@ -1,10 +1,10 @@
 apply plugin: 'java'
 
-repositories {
-    jcenter()
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile "com.google.code.gson:gson:2.8.0" // 最新版本 @21070207
+    compile "org.json:org.json:2.0" // 最新版本 @21070207
+    compile "com.lowagie:itext:2.1.7" // 最新版本4.2.2 @21070207
+    testCompile "junit:junit:4.11"
 }
+
