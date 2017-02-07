@@ -1,24 +1,22 @@
 package com.huiyh.pdfkit.lowagie;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import com.huiyh.common.IOUtils;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
+import static com.huiyh.pdfkit.lowagie.BookmarkConst.*;
 
 public class BookmarkHelper {
-    private static int line = -1;
-    private List<Map> data = null;
 
-    public void setOutlines(String oldFile, String newFile, String outlinesFile) {
+
+    public static void setOutlines(String oldFile, String newFile, List<HashMap<String ,Object>> data) {
         try {
             //create a reader for a certain document
             PdfReader reader = new PdfReader(oldFile);
@@ -26,11 +24,8 @@ public class BookmarkHelper {
             // we create a stamper that will copy the document to a new file
             PdfStamper stamp = new PdfStamper(reader, new FileOutputStream(newFile));
 
-            //read the outlines structure file
-            readOutlinesFile(outlinesFile);
-
             //set the outlines
-            stamp.setOutlines(createOutlines());
+            stamp.setOutlines(data);
 
             // closing PdfStamper will generate the new PDF file
             stamp.close();
@@ -42,45 +37,32 @@ public class BookmarkHelper {
 
     }
 
-    public List createOutlines() {
-        List list = new ArrayList();
-
-        HashMap map = null;
-        int lastLine = line + 1;
-
-        do {
-            line++;
-
-            map = new HashMap();
-            map.put("Title", ((Map) data.get(line)).get("Title"));
-            map.put("Action", "GoTo");
-            map.put("Page", ((Map) data.get(line)).get("Page"));
-
-            if (hasChildren(line)) {
-                map.put("Kids", createOutlines());
-            }
-
-            list.add(map);
-        } while (hasSubling(lastLine));
-
-        return list;
+    public static HashMap<String, Object> createMarkItem(String title, int pageNum) {
+        HashMap<String, Object> item = new HashMap<>();
+        item.put(KEY_ACTION, VALUE_ACTION_GOTO);
+        item.put(KEY_TITLE, title);
+        String page = pageNum + VALUE_PAGE_FIT;
+        item.put(KEY_PAGE, page);
+        return item;
     }
 
     /*
-*List item:
-*String[] = {INDEX, PAGE, TITLE}
-*/
-    private void readOutlinesFile(String file) {
-        Map map = null;
+     * List item:
+     * String[] = {INDEX, PAGE, TITLE}
+     */
+    public static List<Map> readOutlinesFile(String file) {
         FileReader fileReader = null;
         BufferedReader reader = null;
-        List<Map> lines = new ArrayList();
+        List<Map> lines = null;
+
         try {
             fileReader = new FileReader(file);
             reader = new BufferedReader(fileReader);
+            lines = new ArrayList();
 
             String line = null;
             String subStr = null;
+            Map map = null;
             int tabIndex = 0;
             int spaceIndex = 0;
 
@@ -92,7 +74,7 @@ public class BookmarkHelper {
                 spaceIndex = line.indexOf(" ");
                 spaceIndex = (spaceIndex >= 0) ? spaceIndex : Integer.MAX_VALUE;
                 subStr = line.substring(0, tabIndex < spaceIndex ? tabIndex : spaceIndex);
-                map.put("Index", subStr);
+                map.put(KEY_INDEX, subStr);
                 line = line.substring(subStr.length() + 1).trim();
 
                 tabIndex = line.indexOf("/t");
@@ -100,9 +82,9 @@ public class BookmarkHelper {
                 spaceIndex = line.indexOf(" ");
                 spaceIndex = (spaceIndex >= 0) ? spaceIndex : Integer.MAX_VALUE;
                 subStr = line.substring(0, tabIndex < spaceIndex ? tabIndex : spaceIndex);
-                map.put("Page", subStr);
+                map.put(KEY_PAGE, subStr);
 
-                map.put("Title", line.substring(subStr.length() + 1).trim());
+                map.put(KEY_TITLE, line.substring(subStr.length() + 1).trim());
 
                 lines.add(map);
             }
@@ -111,44 +93,11 @@ public class BookmarkHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            if(reader != null){
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(fileReader != null){
-                try {
-                    fileReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            IOUtils.close(reader);
+            IOUtils.close(fileReader);
         }
 
-        this.data = lines;
+        return lines;
     }
 
-    private boolean hasSubling(int lastLine) {
-        if (line >= data.size() - 1) return false;
-
-        String lastIndexStr = (String)data.get(lastLine).get("Index");
-        String currIndexStr = (String)data.get(line + 1).get("Index");
-
-        return (lastIndexStr.length() == currIndexStr.length());
-    }
-
-    private boolean hasChildren(int line) {
-        if (line >= data.size() - 1) return false;
-
-        String currIndexStr = (String)data.get(line).get("Index");
-        String nextIndexStr = (String)data.get(line + 1).get("Index");
-
-        if (line + 1 < data.size()
-                && currIndexStr.length() < nextIndexStr.length())
-            return true;
-
-        return false;
-    }
 }

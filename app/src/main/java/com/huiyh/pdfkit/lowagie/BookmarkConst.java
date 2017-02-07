@@ -5,8 +5,9 @@ package com.huiyh.pdfkit.lowagie;
  */
 public class BookmarkConst {
 
-    public static final String KEY_PAGE = "Page";
     public static final String KEY_TITLE = "Title";
+    public static final String KEY_PAGE = "Page";
+    public static final String KEY_INDEX = "Index";
     public static final String KEY_KIDS = "Kids";
     public static final String KEY_ACTION = "Action";
     public static final String VALUE_ACTION_GOTO = "GoTo";

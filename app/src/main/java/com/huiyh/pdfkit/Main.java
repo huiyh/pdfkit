@@ -1,6 +1,6 @@
 package com.huiyh.pdfkit;
 
-import com.huiyh.pdfkit.lowagie.BookmarkHelper2;
+import com.huiyh.pdfkit.lowagie.BookmarkHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,15 +43,15 @@ public class Main {
             String s = split[split.length - 1];
             try {
                 int i = Integer.parseInt(s);
-                HashMap<String, Object> markItem = BookmarkHelper2.createMarkItem(dataStr, i + 13);
+                HashMap<String, Object> markItem = BookmarkHelper.createMarkItem(dataStr, i + 13);
                 bookmarks.add(markItem);
             } catch (Exception e){
                 e.printStackTrace();
-                HashMap<String, Object> markItem = BookmarkHelper2.createMarkItem(dataStr, 1);
+                HashMap<String, Object> markItem = BookmarkHelper.createMarkItem(dataStr, 1);
                 bookmarks.add(markItem);
             }
         };
-        BookmarkHelper2 helper = new BookmarkHelper2();
+        BookmarkHelper helper = new BookmarkHelper();
         helper.setOutlines(fileName,destName,bookmarks);
     }
 

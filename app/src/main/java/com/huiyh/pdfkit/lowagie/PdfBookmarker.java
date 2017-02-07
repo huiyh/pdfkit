@@ -84,7 +84,7 @@ public class PdfBookmarker extends JFrame implements ActionListener {
                 this.btn_run.setEnabled(true);
             }
         } else if (event.getSource() == btn_run) {
-            new BookmarkHelper().setOutlines(oldFile, newFile, scriptFile);
+            new BookmarkCreater().setOutlines(oldFile, newFile, scriptFile);
 
             this.btn_save_path.setEnabled(false);
             this.btn_script_file.setEnabled(false);
