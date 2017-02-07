@@ -19,7 +19,7 @@ public class Main {
         // write your code here
         // 读入pdf文件
         String fileName = "C:\\Users\\huiyh\\Desktop\\新建文件夹\\批判性思维[美]理查德.保罗.pdf";
-        String destName = "C:\\Users\\huiyh\\Desktop\\新建文件夹\\批判性思维[美]理查德.保罗.bookmark.pdf";
+        String destName = fileName + ".bookmark.pdf";
 //        PdfReader reader = new PdfReader(fileName);
 //        List<HashMap<String, Object>> bookmarks = SimpleBookmark.getBookmark(reader);
         List<HashMap<String, Object>> bookmarks = new ArrayList<>() ;
