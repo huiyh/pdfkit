@@ -1,11 +1,15 @@
 package com.huiyh.pdfkit.lowagie;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.huiyh.common.IOUtils;
+import com.huiyh.pdfkit.Bookmark;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +20,7 @@ import static com.huiyh.pdfkit.lowagie.BookmarkConst.*;
 public class BookmarkHelper {
 
 
-    public static void setOutlines(String oldFile, String newFile, List<HashMap<String ,Object>> data) {
+    public static void setOutlines(String oldFile, String newFile, List<Map<String ,Object>> data) {
         try {
             //create a reader for a certain document
             PdfReader reader = new PdfReader(oldFile);
@@ -37,12 +41,45 @@ public class BookmarkHelper {
 
     }
 
-    public static HashMap<String, Object> createMarkItem(String title, int pageNum) {
+    public static Map<String, Object> createFitMarkItem(String title, int pageNum) {
         HashMap<String, Object> item = new HashMap<>();
         item.put(KEY_ACTION, VALUE_ACTION_GOTO);
         item.put(KEY_TITLE, title);
-        String page = pageNum + VALUE_PAGE_FIT;
+        String page = BookmarkConst.formatPageFit(pageNum);
         item.put(KEY_PAGE, page);
+        return item;
+    }
+
+    public static Map<String, Object> createXYZMarkItem(String title, int pageNum, int pageY) {
+        HashMap<String, Object> item = new HashMap<>();
+        item.put(KEY_ACTION, VALUE_ACTION_GOTO);
+        item.put(KEY_TITLE, title);
+        String page = BookmarkConst.formatPageXYZ(pageNum, pageY);
+        item.put(KEY_PAGE, page);
+        return item;
+    }
+
+    public static Map<String, Object> createFitMarkItem(String title, int pageNum, List<Map<String, Object>> kids) {
+        HashMap<String, Object> item = new HashMap<>();
+        item.put(KEY_ACTION, VALUE_ACTION_GOTO);
+        item.put(KEY_TITLE, title);
+        String page = BookmarkConst.formatPageFit(pageNum);
+        item.put(KEY_PAGE, page);
+        if (kids != null && !kids.isEmpty()){
+            item.put(KEY_KIDS, kids);
+        }
+        return item;
+    }
+
+    public static Map<String, Object> createXYZMarkItem(String title, int pageNum, List<Map<String, Object>> kids, int pageY) {
+        HashMap<String, Object> item = new HashMap<>();
+        item.put(KEY_ACTION, VALUE_ACTION_GOTO);
+        item.put(KEY_TITLE, title);
+        String page = BookmarkConst.formatPageXYZ(pageNum, pageY);
+        item.put(KEY_PAGE, page);
+        if (kids != null && !kids.isEmpty()){
+            item.put(KEY_KIDS, kids);
+        }
         return item;
     }
 
@@ -99,5 +136,40 @@ public class BookmarkHelper {
 
         return lines;
     }
+    public static List<Map<String, Object>> readOutlinesJsonFile(String file) {
+        FileReader fileReader = null;
+        BufferedReader reader = null;
+        List<Map<String, Object>> lines = new ArrayList();
 
+        try {
+            fileReader = new FileReader(file);
+            reader = new BufferedReader(fileReader);
+            StringBuilder builder = new StringBuilder();
+
+
+            String line = null;
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            Type type = new TypeToken<List<Bookmark>>() {
+            }.getType();
+            List<Bookmark> bookmarks = new Gson().fromJson(builder.toString(), type);
+            if (bookmarks != null && !bookmarks.isEmpty()){
+                for (Bookmark bookmark : bookmarks){
+
+                    lines.add(bookmark.asOutline());
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            IOUtils.close(reader);
+            IOUtils.close(fileReader);
+        }
+        return lines;
+    }
 }
