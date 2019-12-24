@@ -2,7 +2,7 @@ package com.huiyh.pdfkit.lowagie;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.huiyh.common.IOUtils;
+import com.huiyh.util.IOUtils;
 import com.huiyh.pdfkit.Bookmark;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfReader;

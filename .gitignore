@@ -1,6 +1,7 @@
 .idea
 .gradle/
 out/
+jutils/
 **.iml
 */.gradle/
 */build/

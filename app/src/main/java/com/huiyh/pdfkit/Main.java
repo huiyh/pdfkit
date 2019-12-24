@@ -1,8 +1,8 @@
 package com.huiyh.pdfkit;
 
 import com.google.gson.Gson;
-import com.huiyh.common.IOUtils;
-import com.huiyh.common.NumberUtils;
+import com.huiyh.util.IOUtils;
+import com.huiyh.util.NumberUtils;
 import com.huiyh.pdfkit.lowagie.BookmarkHelper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.SimpleBookmark;
