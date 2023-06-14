@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.huiyh.util.IOUtils;
 import com.huiyh.pdfkit.Bookmark;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -20,7 +21,7 @@ import static com.huiyh.pdfkit.lowagie.BookmarkConst.*;
 public class BookmarkHelper {
 
 
-    public static void setOutlines(String oldFile, String newFile, List<Map<String ,Object>> data) {
+    public static void setOutlines(String oldFile, String newFile, List<HashMap<String ,Object>> data) {
         try {
             //create a reader for a certain document
             PdfReader reader = new PdfReader(oldFile);
@@ -50,7 +51,7 @@ public class BookmarkHelper {
         return item;
     }
 
-    public static Map<String, Object> createXYZMarkItem(String title, int pageNum, int pageY) {
+    public static HashMap<String, Object> createXYZMarkItem(String title, int pageNum, int pageY) {
         HashMap<String, Object> item = new HashMap<>();
         item.put(KEY_ACTION, VALUE_ACTION_GOTO);
         item.put(KEY_TITLE, title);
@@ -136,10 +137,10 @@ public class BookmarkHelper {
 
         return lines;
     }
-    public static List<Map<String, Object>> readOutlinesJsonFile(String file) {
+    public static List<HashMap<String, Object>> readOutlinesJsonFile(String file) {
         FileReader fileReader = null;
         BufferedReader reader = null;
-        List<Map<String, Object>> lines = new ArrayList();
+        List<HashMap<String, Object>> lines = new ArrayList();
 
         try {
             fileReader = new FileReader(file);
@@ -158,7 +159,7 @@ public class BookmarkHelper {
             if (bookmarks != null && !bookmarks.isEmpty()){
                 for (Bookmark bookmark : bookmarks){
 
-                    lines.add(bookmark.asOutline());
+                    lines.add((HashMap<String, Object>) bookmark.asOutline());
                 }
             }
 

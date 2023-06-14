@@ -1,7 +1,11 @@
+.DS_Store
+
 .idea
-.gradle/
-out/
-jutils/
 **.iml
+
+.gradle/
 */.gradle/
 */build/
+out/
+
+jutils/

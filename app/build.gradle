@@ -1,11 +1,21 @@
 apply plugin: 'java'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(":jutils")
-    compile "com.google.code.gson:gson:2.8.5" // 最新版本 @21070207
-    compile "org.json:org.json:2.0" // 最新版本 @21070207
-    compile "com.lowagie:itext:2.1.7" // 最新版本4.2.2 @21070207
-    testCompile "junit:junit:4.11"
+    implementation fileTree(dir: 'libs', include: '*.jar')
+//    implementation 'com.itextpdf:itextpdf:5.5.8' //  5.5.8 @
+//    implementation 'com.itextpdf:itext-pdfa:5.5.8'
+
+    implementation 'com.itextpdf:itextpdf:5.5.13.3' // 5.5.13.3 @Feb25,2022 5.5.8 @
+    implementation 'com.itextpdf:itext-pdfa:5.5.13.3'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.73'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.73'
+
+//    implementation "com.lowagie:itext:4.2.2" // 4.2.2 @Jul10,2015  2.1.7 @
+
+    implementation project(":jutils")
+    implementation "com.google.code.gson:gson:2.10.1" // 2.10.1@Jan06,2023
+//    implementation "com.google.code.gson:gson:2.8.5" // 2.8.5 @21070207
+    implementation "org.json:json:20230227"
+//    implementation "org.json:org.json:2.0" // 2.0 @21070207
 }
 

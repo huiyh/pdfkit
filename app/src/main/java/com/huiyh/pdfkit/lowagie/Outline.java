@@ -4,13 +4,13 @@ package com.huiyh.pdfkit.lowagie;
  * Created by huiyh on 2016/2/24.
  */
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfAction;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfOutline;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfAction;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfOutline;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
 
